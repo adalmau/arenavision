@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ca" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Scraping ARENAVISION.IN</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    </head>
+    <body>
+        <div class="jumbotron">
+            <div class="container">
+                <h1 class="display-4">Scraping de la web arenavision.in</h1>
+                <p class="lead">Aquest és un projecte d'extracció de la llista d'esdeveniments que ofereix <a href="https://arenavision.in/">arenavision.in</a> per ser reproduïts en streaming P2P gràcies al protocol <a href="http://www.bittorrent.org/beps/bep_0003.html">BitTorrent</a> i la tecnologia d'<a href="http://www.acestream.org/">Acestream</a>.</p>
+                <hr class="my-4">
+                <p>Per desenvolupar aquesta web s'han utilitzat les eines de PHP per obtenir els continguts de arenavision.in i <a href="https://getbootstrap.com/">Bootstrap</a> i <a href="https://datatables.net/">DataTables</a> per mostrar-los.</p>
+                <p>Si tenim el reproductor d'Acestream a l'ordinador, mòbil o tauleta quan es cliqui l'enllaç que hi ha al costat de cada esdeveniment (els canals) directament es llencarà l'aplicació amb l'enllaç al stream corresponent.</p>
+                <p>Què és el web scraping? Web scraping és el procés de recopilar informació de forma automàtica de la web. Pots trobar més informació a la seva <a href="https://ca.wikipedia.org/wiki/Web_scraping">entrada de la Wikipèdia</a>.</p>
+            </div>
+        </div>
+        <div class="container">
+            <div class="table-responsive">
+                <table class="table table-striped" id="events">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Dia</th>
+                            <th>Hora</th>
+                            <th>Esport</th>
+                            <th>Competició</th>
+                            <th>Esdeveniment</th>
+                            <th>Canals</th>
+                        </tr>
+                    </thead>
+                    <tbody id="events_body">
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                Carregant dades.<br/>
+                                <i class="fas fa-spinner fa-spin fa-3x"></i><br/>
+                                Espera si us plau...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br/><br/>
+
+
+        <script type="text/javascript">
+            /*
+                Creo l'objecte xhttp per enviar una petició mitjancçant AJAX a projectes.php, que no té cap funció
+                sinó que l'arxiu automàticament, sempre que se li fa una petició GET, retorna les dades que recupera
+                d'arenavision.in en format HTML per fer més còmode la visualització. Aquestes dades s'incrusten directament
+                a la taula "events", concretament al seu body "events_body", ja que el header ja l'he creat amb els
+                títols de les columnes.
+
+            */
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("events_body").innerHTML = this.responseText;
+                    /*
+                        Un cop escrita la taula utilitzo el plugin DataTable de jQuery per afegir la possibilitat de la
+                        cerca, possibilitat d'ordenació, etc.
+                    */
+                    $('#events').DataTable();
+                }
+            };
+            xhttp.open("GET", "functions.php", true);
+            xhttp.send();
+        </script>
+    </body>
+</html>
