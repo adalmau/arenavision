@@ -53,7 +53,7 @@
         $context = stream_context_create($options);
 
         // Obro la URL amb les capçaleres anteriors
-        $URL = file_get_contents('http://arenavision.us/guide', false, $context);
+        $URL = file_get_contents('http://arenavision.se/guide', false, $context);
 
         //Creo un objecte DOMDocument per poder recórrer la pàgina web com un arbre DOM
         $DOM = new DOMDocument('1.0', 'utf-8');
